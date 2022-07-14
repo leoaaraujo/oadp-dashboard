@@ -1004,12 +1004,14 @@
         "id": 25,
         "legend": {
           "alignAsTable": true,
-          "avg": true,
+          "avg": false,
           "current": true,
-          "max": true,
-          "min": true,
-          "rightSide": false,
+          "max": false,
+          "min": false,
+          "rightSide": true,
           "show": true,
+          "sort": "current",
+          "sortDesc": true,
           "total": false,
           "values": true
         },
@@ -1031,9 +1033,17 @@
         "targets": [
           {
             "exemplar": true,
-            "expr": "sum(rate(velero_backup_success_total{namespace=~\"$namespace\",schedule=~\"$schedule\"}[6h])) / sum(rate(velero_backup_attempt_total{namespace=~\"$namespace\",schedule=~\"$schedule\"}[6h]))",
+            "expr": "sum(velero_backup_tarball_size_bytes{namespace=~\"$namespace\",schedule=~\"$schedule\"})",
+            "hide": false,
             "interval": "",
-            "legendFormat": "Backup",
+            "legendFormat": "Total",
+            "refId": "B"
+          },
+          {
+            "exemplar": true,
+            "expr": "velero_backup_tarball_size_bytes{namespace=~\"$namespace\",schedule=~\"$schedule\"}",
+            "interval": "",
+            "legendFormat": "{{ schedule }}",
             "refId": "A"
           }
         ],
@@ -1041,10 +1051,10 @@
         "timeFrom": null,
         "timeRegions": [],
         "timeShift": null,
-        "title": "Backup Success Rate",
+        "title": "Backup Size",
         "tooltip": {
           "shared": true,
-          "sort": 0,
+          "sort": 1,
           "value_type": "individual"
         },
         "type": "graph",
@@ -1058,7 +1068,7 @@
         "yaxes": [
           {
             "$$hashKey": "object:67",
-            "format": "percentunit",
+            "format": "bytes",
             "label": null,
             "logBase": 1,
             "max": null,
@@ -1067,7 +1077,7 @@
           },
           {
             "$$hashKey": "object:68",
-            "format": "percentunit",
+            "format": "bytes",
             "label": null,
             "logBase": 1,
             "max": null,
@@ -1102,13 +1112,13 @@
         "id": 24,
         "legend": {
           "alignAsTable": true,
-          "avg": true,
+          "avg": false,
           "current": true,
-          "max": true,
-          "min": true,
-          "rightSide": false,
+          "max": false,
+          "min": false,
+          "rightSide": true,
           "show": true,
-          "total": false,
+          "total": true,
           "values": true
         },
         "lines": true,
@@ -1129,9 +1139,9 @@
         "targets": [
           {
             "exemplar": true,
-            "expr": "sum(rate(velero_backup_success_total{namespace=~\"$namespace\",schedule=~\"$schedule\"}[6h])) / sum(rate(velero_backup_attempt_total{namespace=~\"$namespace\",schedule=~\"$schedule\"}[6h]))",
+            "expr": "sum(rate(velero_backup_duration_seconds_bucket{namespace=~\"$namespace\",schedule=~\"$schedule\"}[6h])) by (schedule)",
             "interval": "",
-            "legendFormat": "Backup",
+            "legendFormat": "{{ schedule }}",
             "refId": "A"
           }
         ],
@@ -1139,7 +1149,7 @@
         "timeFrom": null,
         "timeRegions": [],
         "timeShift": null,
-        "title": "Backup Success Rate",
+        "title": "Backup Time Duration",
         "tooltip": {
           "shared": true,
           "sort": 0,
@@ -1156,7 +1166,7 @@
         "yaxes": [
           {
             "$$hashKey": "object:67",
-            "format": "percentunit",
+            "format": "s",
             "label": null,
             "logBase": 1,
             "max": null,
@@ -1165,7 +1175,7 @@
           },
           {
             "$$hashKey": "object:68",
-            "format": "percentunit",
+            "format": "s",
             "label": null,
             "logBase": 1,
             "max": null,
@@ -1281,7 +1291,7 @@
       ]
     },
     "time": {
-      "from": "now-24h",
+      "from": "now-6h",
       "to": "now"
     },
     "timepicker": {
@@ -1290,5 +1300,5 @@
     "timezone": "browser",
     "title": "oadp-dashboard",
     "uid": "pL3dZRgVz",
-    "version": 454
+    "version": 456
   }
