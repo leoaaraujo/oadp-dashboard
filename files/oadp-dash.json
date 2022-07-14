@@ -17,7 +17,7 @@
     "gnetId": null,
     "graphTooltip": 0,
     "id": 2,
-    "iteration": 1657770970916,
+    "iteration": 1657820792428,
     "links": [],
     "panels": [
       {
@@ -88,7 +88,7 @@
         "id": 4,
         "options": {
           "colorMode": "value",
-          "graphMode": "none",
+          "graphMode": "area",
           "justifyMode": "center",
           "orientation": "auto",
           "reduceOptions": {
@@ -128,7 +128,7 @@
                 "text": "UP",
                 "to": "",
                 "type": 1,
-                "value": "1"
+                "value": "100"
               },
               {
                 "from": "",
@@ -137,6 +137,13 @@
                 "to": "",
                 "type": 1,
                 "value": "0"
+              },
+              {
+                "from": "1",
+                "id": 3,
+                "text": "PARTIAL",
+                "to": "99",
+                "type": 2
               }
             ],
             "thresholds": {
@@ -148,14 +155,19 @@
                 },
                 {
                   "color": "red",
+                  "value": 0
+                },
+                {
+                  "color": "yellow",
                   "value": ""
                 },
                 {
                   "color": "green",
-                  "value": ""
+                  "value": 100
                 }
               ]
-            }
+            },
+            "unit": "percent"
           },
           "overrides": []
         },
@@ -168,7 +180,7 @@
         "id": 5,
         "options": {
           "colorMode": "value",
-          "graphMode": "none",
+          "graphMode": "area",
           "justifyMode": "center",
           "orientation": "auto",
           "reduceOptions": {
@@ -185,10 +197,11 @@
         "targets": [
           {
             "exemplar": true,
-            "expr": "sum(kube_pod_container_status_ready{namespace=~\"$namespace\",container=\"restic\"}) / sum(kube_node_role{role=\"worker\"})",
+            "expr": "avg(avg(count(kube_pod_container_status_ready{namespace=~\"$namespace\",container=\"velero\"}) by (container)) / avg(count(kube_node_role{role=\"worker\"}) by (container))*100)",
+            "hide": false,
             "interval": "",
             "legendFormat": "",
-            "refId": "A"
+            "refId": "B"
           }
         ],
         "title": "Restic State",
@@ -219,6 +232,7 @@
                 "value": "0"
               }
             ],
+            "noValue": "0",
             "thresholds": {
               "mode": "absolute",
               "steps": [
@@ -228,14 +242,15 @@
                 },
                 {
                   "color": "red",
-                  "value": ""
+                  "value": 0
                 },
                 {
                   "color": "green",
-                  "value": ""
+                  "value": 1
                 }
               ]
-            }
+            },
+            "unit": "short"
           },
           "overrides": []
         },
@@ -248,7 +263,7 @@
         "id": 6,
         "options": {
           "colorMode": "value",
-          "graphMode": "none",
+          "graphMode": "area",
           "justifyMode": "center",
           "orientation": "auto",
           "reduceOptions": {
@@ -265,7 +280,8 @@
         "targets": [
           {
             "exemplar": true,
-            "expr": "sum(kube_pod_container_status_ready{namespace=~\"$namespace\",container=~\".*registry.*\"}) ",
+            "expr": "avg(kube_pod_container_status_ready{namespace=~\"$namespace\",container=~\".*registry.*\"}) by (container)",
+            "instant": false,
             "interval": "",
             "legendFormat": "",
             "refId": "A"
@@ -328,7 +344,7 @@
         "id": 7,
         "options": {
           "colorMode": "value",
-          "graphMode": "none",
+          "graphMode": "area",
           "justifyMode": "center",
           "orientation": "auto",
           "reduceOptions": {
@@ -758,7 +774,7 @@
         {
           "allValue": null,
           "current": {
-            "selected": true,
+            "selected": false,
             "text": "All",
             "value": "$__all"
           },
@@ -789,7 +805,7 @@
       ]
     },
     "time": {
-      "from": "now-12h",
+      "from": "now-6h",
       "to": "now"
     },
     "timepicker": {
@@ -798,5 +814,5 @@
     "timezone": "browser",
     "title": "oadp-dashboard",
     "uid": "pL3dZRgVz",
-    "version": 10
+    "version": 452
   }
