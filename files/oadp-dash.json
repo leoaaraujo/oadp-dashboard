@@ -17,7 +17,7 @@
     "gnetId": null,
     "graphTooltip": 0,
     "id": 2,
-    "iteration": 1657768837313,
+    "iteration": 1657770970914,
     "links": [],
     "panels": [
       {
@@ -80,7 +80,7 @@
           "overrides": []
         },
         "gridPos": {
-          "h": 4,
+          "h": 5,
           "w": 4,
           "x": 0,
           "y": 1
@@ -160,7 +160,7 @@
           "overrides": []
         },
         "gridPos": {
-          "h": 4,
+          "h": 5,
           "w": 4,
           "x": 4,
           "y": 1
@@ -240,7 +240,7 @@
           "overrides": []
         },
         "gridPos": {
-          "h": 4,
+          "h": 5,
           "w": 4,
           "x": 8,
           "y": 1
@@ -320,7 +320,7 @@
           "overrides": []
         },
         "gridPos": {
-          "h": 4,
+          "h": 5,
           "w": 4,
           "x": 12,
           "y": 1
@@ -353,6 +353,123 @@
         ],
         "title": "Controller Manager State",
         "type": "stat"
+      },
+      {
+        "datasource": null,
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "decimals": 3,
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            },
+            "unit": "percent"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 5,
+          "w": 4,
+          "x": 16,
+          "y": 1
+        },
+        "id": 9,
+        "options": {
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "showThresholdLabels": false,
+          "showThresholdMarkers": true,
+          "text": {}
+        },
+        "pluginVersion": "7.5.15",
+        "targets": [
+          {
+            "exemplar": true,
+            "expr": "avg((sum(rate(container_cpu_usage_seconds_total{namespace=~\"$namespace\"}[5m])) by (namespace,pod,container) / on (container,pod,namespace) ((kube_pod_container_resource_limits{namespace=~\"$namespace\",resource=\"cpu\"} > 0)*300))*100)",
+            "interval": "",
+            "legendFormat": "",
+            "refId": "A"
+          }
+        ],
+        "title": "CPU Usage",
+        "type": "gauge"
+      },
+      {
+        "datasource": null,
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "decimals": 2,
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            },
+            "unit": "percent"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 5,
+          "w": 4,
+          "x": 20,
+          "y": 1
+        },
+        "id": 10,
+        "options": {
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "showThresholdLabels": false,
+          "showThresholdMarkers": true,
+          "text": {}
+        },
+        "pluginVersion": "7.5.15",
+        "targets": [
+          {
+            "exemplar": true,
+            "expr": "avg((avg (container_memory_working_set_bytes{namespace=~\"$namespace\", container!=\"POD\"}) by (container,pod))/ on (container,pod)(avg (kube_pod_container_resource_limits>0 ) by (container, pod))*100)",
+            "hide": false,
+            "interval": "",
+            "legendFormat": "",
+            "refId": "B"
+          }
+        ],
+        "title": "Memory Usage",
+        "type": "gauge"
       }
     ],
     "schemaVersion": 27,
@@ -367,7 +484,7 @@
         {
           "allValue": null,
           "current": {
-            "selected": true,
+            "selected": false,
             "text": "open-cluster-management-backup",
             "value": "open-cluster-management-backup"
           },
@@ -438,5 +555,5 @@
     "timezone": "browser",
     "title": "oadp-dashboard",
     "uid": "pL3dZRgVz",
-    "version": 4
+    "version": 10
   }
