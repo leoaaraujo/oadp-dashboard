@@ -549,7 +549,7 @@
         "targets": [
           {
             "exemplar": true,
-            "expr": "sum(velero_backup_total{namespace=~\"open-cluster-management-backup\"})",
+            "expr": "sum(velero_backup_total{namespace=~\"$namespace\"})",
             "interval": "",
             "legendFormat": "",
             "refId": "A"
@@ -1045,6 +1045,14 @@
             "interval": "",
             "legendFormat": "{{ schedule }}",
             "refId": "A"
+          },
+          {
+            "exemplar": true,
+            "expr": "sum(velero_backup_tarball_size_bytes{namespace=~\"$namespace\",schedule!~\"$schedule\"})",
+            "hide": false,
+            "interval": "",
+            "legendFormat": "non-schedule",
+            "refId": "C"
           }
         ],
         "thresholds": [],
@@ -1189,7 +1197,7 @@
         }
       },
       {
-        "collapsed": true,
+        "collapsed": false,
         "datasource": null,
         "gridPos": {
           "h": 1,
@@ -1203,20 +1211,489 @@
         "type": "row"
       },
       {
-        "collapsed": true,
+        "datasource": null,
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [],
+            "noValue": "0",
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                }
+              ]
+            },
+            "unit": "none"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 7,
+          "w": 3,
+          "x": 0,
+          "y": 22
+        },
+        "id": 27,
+        "options": {
+          "colorMode": "background",
+          "graphMode": "area",
+          "justifyMode": "center",
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "text": {},
+          "textMode": "auto"
+        },
+        "pluginVersion": "7.5.15",
+        "targets": [
+          {
+            "exemplar": true,
+            "expr": "sum(velero_restore_total{namespace=~\"$namespace\"})",
+            "interval": "",
+            "legendFormat": "",
+            "refId": "A"
+          }
+        ],
+        "title": "Restore Existent",
+        "type": "stat"
+      },
+      {
+        "datasource": null,
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [],
+            "noValue": "0",
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                }
+              ]
+            },
+            "unit": "none"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 7,
+          "w": 3,
+          "x": 3,
+          "y": 22
+        },
+        "id": 28,
+        "options": {
+          "colorMode": "background",
+          "graphMode": "area",
+          "justifyMode": "center",
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "text": {},
+          "textMode": "auto"
+        },
+        "pluginVersion": "7.5.15",
+        "targets": [
+          {
+            "exemplar": true,
+            "expr": "sum(velero_restore_success_total{namespace=~\"$namespace\",schedule=~\"$schedule\"})",
+            "interval": "",
+            "legendFormat": "",
+            "refId": "A"
+          }
+        ],
+        "title": "Restore Executed Success",
+        "type": "stat"
+      },
+      {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": null,
+        "fieldConfig": {
+          "defaults": {},
+          "overrides": []
+        },
+        "fill": 2,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 7,
+          "w": 9,
+          "x": 6,
+          "y": 22
+        },
+        "hiddenSeries": false,
+        "id": 29,
+        "legend": {
+          "alignAsTable": true,
+          "avg": true,
+          "current": true,
+          "max": true,
+          "min": true,
+          "rightSide": false,
+          "show": true,
+          "total": false,
+          "values": true
+        },
+        "lines": true,
+        "linewidth": 2,
+        "nullPointMode": "null as zero",
+        "options": {
+          "alertThreshold": true
+        },
+        "percentage": true,
+        "pluginVersion": "7.5.15",
+        "pointradius": 2,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "exemplar": true,
+            "expr": "sum(rate(velero_restore_success_total{namespace=~\"$namespace\",schedule=~\"$schedule\"}[6h])) / sum(rate(velero_restore_attempt_total{namespace=~\"$namespace\",schedule=~\"$schedule\"}[6h]))",
+            "interval": "",
+            "legendFormat": "Restore",
+            "refId": "A"
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "Restore Success Rate",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "$$hashKey": "object:67",
+            "format": "percentunit",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          },
+          {
+            "$$hashKey": "object:68",
+            "format": "percentunit",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      },
+      {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": null,
+        "fieldConfig": {
+          "defaults": {
+            "unit": "none"
+          },
+          "overrides": []
+        },
+        "fill": 1,
+        "fillGradient": 2,
+        "gridPos": {
+          "h": 7,
+          "w": 9,
+          "x": 15,
+          "y": 22
+        },
+        "hiddenSeries": false,
+        "id": 30,
+        "legend": {
+          "alignAsTable": true,
+          "avg": false,
+          "current": true,
+          "hideEmpty": false,
+          "hideZero": false,
+          "max": false,
+          "min": false,
+          "rightSide": true,
+          "show": true,
+          "total": false,
+          "values": true
+        },
+        "lines": true,
+        "linewidth": 1,
+        "nullPointMode": "null as zero",
+        "options": {
+          "alertThreshold": false
+        },
+        "percentage": false,
+        "pluginVersion": "7.5.15",
+        "pointradius": 2,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [],
+        "spaceLength": 10,
+        "stack": true,
+        "steppedLine": false,
+        "targets": [
+          {
+            "exemplar": true,
+            "expr": "sum(velero_restore_success_total{namespace=~\"$namespace\",schedule=~\"$schedule\"})",
+            "hide": false,
+            "instant": false,
+            "interval": "",
+            "legendFormat": "Success",
+            "refId": "B"
+          },
+          {
+            "exemplar": true,
+            "expr": "sum(velero_restore_attempt_total{namespace=~\"$namespace\",schedule=~\"$schedule\"})",
+            "instant": false,
+            "interval": "",
+            "legendFormat": "Attempts",
+            "refId": "A"
+          },
+          {
+            "exemplar": true,
+            "expr": "sum(velero_restore_failed_total{namespace=~\"$namespace\",schedule=~\"$schedule\"})",
+            "hide": false,
+            "interval": "",
+            "legendFormat": "Failure",
+            "refId": "F"
+          },
+          {
+            "exemplar": true,
+            "expr": "sum(velero_restore_partial_failure_total{namespace=~\"$namespace\",schedule=~\"$schedule\"})",
+            "hide": false,
+            "interval": "",
+            "legendFormat": "Partial Failure",
+            "refId": "G"
+          },
+          {
+            "exemplar": true,
+            "expr": "sum(velero_restore_validation_failed_total{namespace=~\"$namespace\",schedule=~\"$schedule\"})",
+            "hide": false,
+            "interval": "",
+            "legendFormat": "Validation Failure",
+            "refId": "C"
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "Restore State Count",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "$$hashKey": "object:67",
+            "format": "none",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          },
+          {
+            "$$hashKey": "object:68",
+            "format": "none",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      },
+      {
+        "collapsed": false,
         "datasource": null,
         "gridPos": {
           "h": 1,
           "w": 24,
           "x": 0,
-          "y": 22
+          "y": 29
         },
         "id": 22,
         "panels": [],
         "title": "Snapshot",
         "type": "row"
+      },
+      {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": null,
+        "fieldConfig": {
+          "defaults": {
+            "unit": "none"
+          },
+          "overrides": []
+        },
+        "fill": 1,
+        "fillGradient": 2,
+        "gridPos": {
+          "h": 8,
+          "w": 24,
+          "x": 0,
+          "y": 30
+        },
+        "hiddenSeries": false,
+        "id": 31,
+        "legend": {
+          "alignAsTable": true,
+          "avg": false,
+          "current": true,
+          "hideEmpty": false,
+          "hideZero": false,
+          "max": false,
+          "min": false,
+          "rightSide": true,
+          "show": true,
+          "total": false,
+          "values": true
+        },
+        "lines": true,
+        "linewidth": 1,
+        "nullPointMode": "null as zero",
+        "options": {
+          "alertThreshold": false
+        },
+        "percentage": false,
+        "pluginVersion": "7.5.15",
+        "pointradius": 2,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [],
+        "spaceLength": 10,
+        "stack": true,
+        "steppedLine": false,
+        "targets": [
+          {
+            "exemplar": true,
+            "expr": "sum(velero_volume_snapshot_success_total{namespace=~\"$namespace\",schedule=~\"$schedule\"})",
+            "hide": false,
+            "instant": false,
+            "interval": "",
+            "legendFormat": "Success",
+            "refId": "B"
+          },
+          {
+            "exemplar": true,
+            "expr": "sum(velero_volume_snapshot_attempt_total{namespace=~\"$namespace\",schedule=~\"$schedule\"})",
+            "instant": false,
+            "interval": "",
+            "legendFormat": "Attempts",
+            "refId": "A"
+          },
+          {
+            "exemplar": true,
+            "expr": "sum(velero_volume_snapshot_failure_total{namespace=~\"$namespace\",schedule=~\"$schedule\"})",
+            "hide": false,
+            "interval": "",
+            "legendFormat": "Failed",
+            "refId": "C"
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "Snapshot State Count",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": false,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "$$hashKey": "object:67",
+            "format": "none",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          },
+          {
+            "$$hashKey": "object:68",
+            "format": "none",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
       }
     ],
+    "refresh": "10s",
     "schemaVersion": 27,
     "style": "dark",
     "tags": [
@@ -1300,5 +1777,5 @@
     "timezone": "browser",
     "title": "oadp-dashboard",
     "uid": "pL3dZRgVz",
-    "version": 456
+    "version": 457
   }
